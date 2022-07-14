@@ -7,24 +7,29 @@ export const getToDo = async (req, res) => {
 
 export const saveToDo = async (req, res) => {
   const { task } = req.body;
-  ToDoModel.create({ task })
-    .then(() => res.status(201).send('Added Successfully'))
-    .catch((err) => console.log(err));
+  try {
+    await ToDoModel.create({ task });
+    res.status(201).send('Added Successfully');
+  } catch (error) {
+    res.status(500).send(error);
+  }
 };
 
-export const deleteToDo = (req, res) => {
-  // const { _id } = req.params.id;
-
-  ToDoModel.findByIdAndDelete(req.params.id)
-    .then(() => res.status(201).send('Deleted Successfully'))
-    .catch((err) => console.log(err));
+export const deleteToDo = async (req, res) => {
+  try {
+    await ToDoModel.findByIdAndDelete(req.params.id);
+    res.status(200).send('Deleted Successfully');
+  } catch (error) {
+    res.status(500).send(error);
+  }
 };
 
 export const updateToDo = async (req, res) => {
   const { _id, task } = req.body;
-  console.log(await ToDoModel.findById(_id));
-
-  ToDoModel.findByIdAndUpdate(_id, { task })
-    .then(() => res.status(201).send('Updated Successfully'))
-    .catch((err) => console.log(err));
+  try {
+    await ToDoModel.findByIdAndUpdate(_id, { task });
+    res.status(200).send('Updated Successfully');
+  } catch (error) {
+    res.status(500).send(error);
+  }
 };

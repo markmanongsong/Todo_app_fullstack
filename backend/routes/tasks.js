@@ -7,9 +7,9 @@ import {
   updateToDo,
 } from '../controller/ToDoController.js';
 
-router.get('/todo', getToDo);
-router.post('/todo', saveToDo);
-router.delete('/todo/:id', deleteToDo);
-router.put('/todo/:id', updateToDo);
+router.get('/', getToDo);
+router.post('/', saveToDo);
+router.delete('/:id', deleteToDo);
+router.put('/:id', updateToDo);
 
 export default router;

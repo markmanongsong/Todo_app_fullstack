@@ -33,19 +33,24 @@ function App() {
     // }
   }, [todo]);
 
+  const duplicateChecking = (arr) => {
+    const duplicate = arr.filter(
+      (task) => task.task.toLowerCase() === text.toLowerCase()
+    );
+    if (duplicate.length !== 0) {
+      console.log('Duplicate found');
+      console.log(duplicate);
+      toast.error('Task Already Exist');
+      return true;
+    }
+    return false;
+  };
+
   const addUpdate = (e) => {
     e.preventDefault();
     console.log(text);
+    if (duplicateChecking(todo)) return;
     if (isUpdating === '') {
-      const duplicate = todo.filter(
-        (task) => task.task.toLowerCase() === text.toLowerCase()
-      );
-      if (duplicate.length !== 0) {
-        console.log('Duplicate found');
-        console.log(duplicate);
-        toast.error('Task Already Exist');
-        return;
-      }
       axios
         .post(`${import.meta.env.VITE_BACKEND_URL}/todo`, { task: text })
         .then((res) => {
@@ -53,6 +58,8 @@ function App() {
           console.log(res.data);
         });
     } else {
+      if (duplicateChecking(todo)) return;
+
       axios
         .put(`${import.meta.env.VITE_BACKEND_URL}/todo/${isUpdating}`, {
           _id: isUpdating,
